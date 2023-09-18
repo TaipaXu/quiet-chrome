@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "Quietu",
+    "version": "0.1.0",
+    "description": "Save the page to your private bookmark folder to avoid them showing up in the browser's address bar recommendation list",
+    "icons": {
+        "16": "./assets/icons/icon_16.png",
+        "48": "./assets/icons/icon_48.png",
+        "128": "./assets/icons/icon_128.png"
+    },
+    "action": {
+        "default_icon": {
+            "16": "./assets/icons/icon_16.png",
+            "24": "./assets/icons/icon_24.png",
+            "32": "./assets/icons/icon_32.png"
+        },
+        "default_title": "Quietu",
+        "default_popup": "popup.html"
+    },
+    "options_page": "options.html",
+    "background": {
+        "type": "module",
+        "service_worker": "service.js"
+    },
+    "permissions": [
+        "storage",
+        "tabs"
+    ],
+    "homepage_url": "https://github.com/TaipaXu/quietu-chrome"
+}
