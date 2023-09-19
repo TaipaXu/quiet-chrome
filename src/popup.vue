@@ -14,7 +14,8 @@
                 label="Name"
                 density="compact"
                 variant="solo"
-                hide-details></v-text-field>
+                hide-details
+                @update:model-value="handleNameChanged"></v-text-field>
             </v-col>
         </v-row>
         <v-row>
@@ -26,7 +27,8 @@
                 :items="groups"
                 item-title="label"
                 item-value="value"
-                variant="solo"></v-select>
+                variant="solo"
+                @update:model-value="handleGroupChanged"></v-select>
             </v-col>
         </v-row>
         <v-row justify="end">
@@ -57,9 +59,10 @@ import MGroup from '@/models/group';
 import MFavorite from '@/models/favorite';
 import {
     getAllGroups as DGetAllGroups,
+    getFavorite as DGetFavorite,
     addFavorite as DAddFavorite,
     removeFavorite as DRemoveFavorite,
-    isFavorite as DIsFavorite
+    updateFavorite as DUpdateFavorite
 } from '@/data/favorite';
 
 interface Option {
@@ -81,7 +84,6 @@ const init = async () => {
         const tabTitle: string = tab.title!;
         const tabUrl: string = tab.url!;
         tabId = tab.id!;
-        name.value = tabTitle;
         url.value = tabUrl;
 
         const dataGroups: MGroup[] = await DGetAllGroups();
@@ -93,7 +95,14 @@ const init = async () => {
             currentGroup.value = dataGroups[0].name;
         }
 
-        isFavorite.value = await DIsFavorite(tabUrl);
+        const result: [MFavorite, MGroup] | undefined = await DGetFavorite(tabUrl);
+        isFavorite.value = result !== undefined;
+        if (result !== undefined) {
+            name.value = result[0].name;
+            currentGroup.value = result[1].name;
+        } else {
+            name.value = tabTitle;
+        }
     }
 };
 init();
@@ -128,6 +137,18 @@ const remove = async () => {
 
 const openOptoinsPage = () => {
     browser.runtime.openOptionsPage();
+};
+
+const handleNameChanged = () => {
+    if (isFavorite.value) {
+        DUpdateFavorite(url.value, name.value, currentGroup.value!);
+    }
+};
+
+const handleGroupChanged = () => {
+    if (isFavorite.value) {
+        DUpdateFavorite(url.value, name.value, currentGroup.value!);
+    }
 };
 </script>
 

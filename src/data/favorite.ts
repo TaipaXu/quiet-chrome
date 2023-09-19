@@ -68,6 +68,17 @@ export const addFavorite = async (favorite: MFavorite, groupName: string) => {
     setRecords(records);
 };
 
+export const getFavorite = async (url: string): Promise<[MFavorite, MGroup] | undefined> => {
+    const records: MGroup[] = await getRecords();
+    for (const group of records) {
+        for (const favorite of group.children || []) {
+            if (favorite.url === url) {
+                return [favorite, group];
+            }
+        }
+    }
+};
+
 export const renameFavorite = async (url: string, name: string) => {
     const records: MGroup[] = await getRecords();
     for (const group of records) {
@@ -87,6 +98,31 @@ export const removeFavorite = async (url: string) => {
         for (const favorite of group.children || []) {
             if (favorite.url === url) {
                 group.removeFavorite(favorite);
+                setRecords(records);
+                return;
+            }
+        }
+    }
+};
+
+export const updateFavorite = async (url: string, name: string, groupName: string) => {
+    console.log(url, name, groupName);
+    const records: MGroup[] = await getRecords();
+    for (const group of records) {
+        for (const favorite of group.children || []) {
+            if (favorite.url === url) {
+                favorite.name = name;
+                if (group.name !== groupName) {
+                    group.removeFavorite(favorite);
+                    for (const item of records) {
+                        if (item.name === groupName) {
+                            item.addFavorite(favorite);
+                            break;
+                        }
+                    }
+                }
+                console.log(records);
+
                 setRecords(records);
                 return;
             }
