@@ -28,10 +28,9 @@
 
             <v-menu
             v-model="showGroupMenu"
-            :position-x="x"
-            :position-y="y"
-            absolute
-            offset-y>
+            :content-props="{
+                style: `left: ${x}px; top: ${y}px;`
+            }">
                 <v-list density="compact">
                     <v-list-item
                     v-for="(item, index) in menuOptions"
@@ -77,7 +76,11 @@
                 </v-list-item>
             </v-list>
 
-            <v-menu v-model="showFavoriteMenu" :position-x="x" :position-y="y" absolute offset-y>
+            <v-menu
+            v-model="showFavoriteMenu"
+            :content-props="{
+                style: `left: ${x}px; top: ${y}px;`
+            }">
                 <v-list density="compact">
                     <v-list-item
                     v-for="(item, index) in menuOptions"
