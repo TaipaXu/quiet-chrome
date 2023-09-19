@@ -9,20 +9,37 @@
             </v-toolbar>
 
             <v-list :lines="false" density="compact" nav>
-                <v-list-item v-for="(item, i) in groups" :key="i" :value="item" color="primary"
-                    :active="selectedGroup === item" @click="handleGroupClicked(item)"
-                    @contextmenu="handleGroupContextMenu($event, item)">
-                    <template v-slot:prepend>
+                <v-list-item
+                v-for="(item, i) in groups"
+                :key="i"
+                :value="item"
+                color="primary"
+                :active="selectedGroup === item"
+                @click="handleGroupClicked(item)"
+                @contextmenu="handleGroupContextMenu($event, item)">
+                    <template #prepend>
                         <v-icon icon="mdi-folder"></v-icon>
                     </template>
-                    <v-list-item-title v-text="item.name"></v-list-item-title>
+                    <v-list-item-title>
+                        {{ item.name }}
+                    </v-list-item-title>
                 </v-list-item>
             </v-list>
 
-            <v-menu v-model="showGroupMenu" :position-x="x" :position-y="y" absolute offset-y>
+            <v-menu
+            v-model="showGroupMenu"
+            :position-x="x"
+            :position-y="y"
+            absolute
+            offset-y>
                 <v-list density="compact">
-                    <v-list-item v-for="(item, index) in menuOptions" :key="index" @click="handleGroupMenuSelect(item.key)">
-                        <v-list-item-title v-text="item.label"></v-list-item-title>
+                    <v-list-item
+                    v-for="(item, index) in menuOptions"
+                    :key="index"
+                    @click="handleGroupMenuSelect(item.key)">
+                        <v-list-item-title>
+                            {{ item.label }}
+                        </v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -37,16 +54,24 @@
             </v-toolbar>
 
             <v-list :lines="false" density="compact" nav>
-                <v-list-item v-for="(item, i) in currentFavorites" :key="i" :value="item" color="primary"
-                    @contextmenu="handleFavoriteContextMenu($event, item)">
-                    <template v-slot:prepend>
+                <v-list-item
+                v-for="(item, i) in currentFavorites"
+                :key="i"
+                :value="item"
+                color="primary"
+                @contextmenu="handleFavoriteContextMenu($event, item)">
+                    <template #prepend>
                         <v-icon icon="mdi-web"></v-icon>
                     </template>
-                    <v-list-item-title v-text="item.name"></v-list-item-title>
+                    <v-list-item-title>
+                        {{ item.name }}
+                    </v-list-item-title>
 
-                    <v-list-item-subtitle v-text="item.url"></v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                        {{ item.url }}
+                    </v-list-item-subtitle>
 
-                    <template v-slot:append>
+                    <template #append>
                         <v-icon icon="mdi-close" @click="removeFavorite(item)"></v-icon>
                     </template>
                 </v-list-item>
@@ -54,9 +79,13 @@
 
             <v-menu v-model="showFavoriteMenu" :position-x="x" :position-y="y" absolute offset-y>
                 <v-list density="compact">
-                    <v-list-item v-for="(item, index) in menuOptions" :key="index"
-                        @click="handleFavoriteMenuSelect(item.key)">
-                        <v-list-item-title v-text="item.label"></v-list-item-title>
+                    <v-list-item
+                    v-for="(item, index) in menuOptions"
+                    :key="index"
+                    @click="handleFavoriteMenuSelect(item.key)">
+                        <v-list-item-title>
+                            {{ item.label }}
+                        </v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -75,7 +104,7 @@ import {
     removeFavorite as DRemoveFavorite,
     addGroup as DAddGroup,
     renameGroup as DRenameGroup,
-    removeGroup as DRemoveGroup,
+    removeGroup as DRemoveGroup
 } from '@/data/favorite';
 
 const groups: Ref<MGroup[]> = ref([]);
@@ -117,12 +146,12 @@ let y = 0;
 const menuOptions = [
     {
         label: 'Rename',
-        key: 'rename',
+        key: 'rename'
     },
     {
         label: 'Delete',
-        key: 'delete',
-    },
+        key: 'delete'
+    }
 ];
 const showGroupMenu = ref(false);
 const showFavoriteMenu = ref(false);
@@ -131,23 +160,23 @@ const handleGroupMenuSelect = async (value: string) => {
     showGroupMenu.value = false;
     switch (value) {
         case 'rename':
-            {
-                const group: MGroup = groupForMenu.value!;
-                const name = prompt('Enter new name', group.name);
-                if (name) {
-                    await DRenameGroup(group.name, name);
-                    await getGroups();
-                }
-                getGroups();
-                break;
+        {
+            const group: MGroup = groupForMenu.value!;
+            const name = prompt('Enter new name', group.name);
+            if (name) {
+                await DRenameGroup(group.name, name);
+                await getGroups();
             }
+            getGroups();
+            break;
+        }
         case 'delete':
-            {
-                const group: MGroup = groupForMenu.value!;
-                await DRemoveGroup(group.name);
-                getGroups();
-                break;
-            }
+        {
+            const group: MGroup = groupForMenu.value!;
+            await DRemoveGroup(group.name);
+            getGroups();
+            break;
+        }
     }
     groupForMenu.value = undefined;
 };
@@ -156,25 +185,25 @@ const handleFavoriteMenuSelect = async (value: string) => {
     showFavoriteMenu.value = false;
     switch (value) {
         case 'rename':
-            {
-                const favorite: MFavorite = favoriteForMenu.value!;
-                const name = prompt('Enter new name', favorite.name);
-                if (name) {
-                    await DRenameFavorite(favorite.url, name);
-                    favorite.name = name;
-                }
-                break;
+        {
+            const favorite: MFavorite = favoriteForMenu.value!;
+            const name = prompt('Enter new name', favorite.name);
+            if (name) {
+                await DRenameFavorite(favorite.url, name);
+                favorite.name = name;
             }
+            break;
+        }
         case 'delete':
-            {
-                const favorite: MFavorite = favoriteForMenu.value!;
-                await DRemoveFavorite(favorite.url);
-                currentFavorites.value = currentFavorites.value.filter(item => (item !== favorite));
-                break;
-            }
+        {
+            const favorite: MFavorite = favoriteForMenu.value!;
+            await DRemoveFavorite(favorite.url);
+            currentFavorites.value = currentFavorites.value.filter(item => (item !== favorite));
+            break;
+        }
     }
     favoriteForMenu.value = undefined;
-}
+};
 const handleGroupContextMenu = (e: MouseEvent, group: MGroup) => {
     e.preventDefault();
     showGroupMenu.value = false;
@@ -196,7 +225,7 @@ const handleFavoriteContextMenu = (e: MouseEvent, favorite: MFavorite) => {
         y = e.clientY;
     });
     favoriteForMenu.value = favorite;
-}
+};
 
 const addFavorite = async () => {
     const url = prompt('Enter url');
@@ -206,14 +235,14 @@ const addFavorite = async () => {
         if (name && url) {
             const favorite: MFavorite = new MFavorite({
                 name,
-                url,
+                url
             });
             await DAddFavorite(favorite, selectedGroup.value!.name);
             await getGroups();
             currentFavorites.value.push(favorite);
         }
     }
-}
+};
 </script>
 
 <style lang="scss">

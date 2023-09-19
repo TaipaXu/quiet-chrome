@@ -9,23 +9,40 @@
     <v-container>
         <v-row>
             <v-col>
-                <v-text-field v-model="name" label="Name" density="compact" variant="solo" hide-details></v-text-field>
+                <v-text-field
+                v-model="name"
+                label="Name"
+                density="compact"
+                variant="solo"
+                hide-details></v-text-field>
             </v-col>
         </v-row>
         <v-row>
             <v-col>
-                <v-select v-model="currentGroup" label="Group" density="compact" :items="groups" item-title="label"
-                    item-value="value" variant="solo"></v-select>
+                <v-select
+                v-model="currentGroup"
+                label="Group"
+                density="compact"
+                :items="groups"
+                item-title="label"
+                item-value="value"
+                variant="solo"></v-select>
             </v-col>
         </v-row>
         <v-row justify="end">
             <v-col cols="auto">
-                <v-btn density="comfortable" :disabled="!isFavorite" @click="remove">
+                <v-btn
+                density="comfortable"
+                :disabled="!isFavorite"
+                @click="remove">
                     Remove
                 </v-btn>
             </v-col>
             <v-col cols="auto">
-                <v-btn density="comfortable" :disabled="isFavorite" @click="save">
+                <v-btn
+                density="comfortable"
+                :disabled="isFavorite"
+                @click="save">
                     Done
                 </v-btn>
             </v-col>
@@ -42,7 +59,7 @@ import {
     getAllGroups as DGetAllGroups,
     addFavorite as DAddFavorite,
     removeFavorite as DRemoveFavorite,
-    isFavorite as DIsFavorite,
+    isFavorite as DIsFavorite
 } from '@/data/favorite';
 
 interface Option {
@@ -70,7 +87,7 @@ const init = async () => {
         const dataGroups: MGroup[] = await DGetAllGroups();
         groups.value = dataGroups.map(item => ({
             label: item.name,
-            value: item.name,
+            value: item.name
         }));
         if (dataGroups.length > 0) {
             currentGroup.value = dataGroups[0].name;
@@ -84,15 +101,15 @@ init();
 const save = async () => {
     const favorite: MFavorite = new MFavorite({
         name: name.value,
-        url: url.value,
+        url: url.value
     });
     await DAddFavorite(favorite, currentGroup.value!);
     await browser.action.setIcon({
         tabId,
         path: {
             19: './assets/icons/favorite_filled_19.png',
-            38: './assets/icons/favorite_filled_38.png',
-        },
+            38: './assets/icons/favorite_filled_38.png'
+        }
     });
     window.close();
 };
@@ -103,15 +120,15 @@ const remove = async () => {
         tabId,
         path: {
             19: './assets/icons/favorite_19.png',
-            38: './assets/icons/favorite_38.png',
-        },
+            38: './assets/icons/favorite_38.png'
+        }
     });
     window.close();
 };
 
 const openOptoinsPage = () => {
     browser.runtime.openOptionsPage();
-}
+};
 </script>
 
 <style lang="scss">

@@ -38,7 +38,7 @@ export default class Group {
     public toJSON(): Params {
         return {
             name: this.name,
-            children: this.children,
+            children: this.children
         };
     }
 

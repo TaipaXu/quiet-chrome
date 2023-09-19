@@ -2,7 +2,6 @@
     "name": "quietu",
     "description": "Save the page to your private bookmark folder to avoid them showing up in the browser's address bar recommendation list",
     "version": "0.1.0",
-    "type": "module",
     "scripts": {
         "dev": "vite build --watch",
         "build": "vite build",

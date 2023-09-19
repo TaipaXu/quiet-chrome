@@ -1,4 +1,4 @@
 export {
     getRecords,
-    setRecords,
+    setRecords
 } from './favorite';

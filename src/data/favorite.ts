@@ -8,20 +8,20 @@ export const getRecords = async (): Promise<MGroup[]> => {
     if (data.items === undefined) {
         records.push(new MGroup({
             name: 'Default',
-            children: [],
+            children: []
         }));
     } else {
         for (const item of data.items) {
             const group: MGroup = new MGroup({
                 name: item.name,
-                children: [],
+                children: []
             });
 
             if (item.children !== undefined && item.children.length > 0) {
                 for (const groupItem of item.children) {
                     group.addFavorite(new MFavorite({
                         name: groupItem.name,
-                        url: groupItem.url,
+                        url: groupItem.url
                     }));
                 }
 
@@ -38,12 +38,12 @@ export const setRecords = async (records: MGroup[]) => {
     for (const record of records) {
         const item = {
             name: record.name,
-            children: <any>[],
+            children: <any>[]
         };
         for (const favorite of record.children || []) {
             item.children.push({
                 name: favorite.name,
-                url: favorite.url,
+                url: favorite.url
             });
         }
         items.push(item);
@@ -52,8 +52,8 @@ export const setRecords = async (records: MGroup[]) => {
     await storage.sync.set({
         favorites: {
             version: '0.1.0',
-            items,
-        },
+            items
+        }
     });
 };
 
@@ -100,18 +100,18 @@ export const getAllGroups = async (): Promise<MGroup[]> => {
     if (data.items === undefined) {
         groups.push(new MGroup({
             name: 'Default',
-            children: [],
+            children: []
         }));
     } else {
         for (const item of data.items) {
             const group: MGroup = new MGroup({
                 name: item.name,
-                children: [],
+                children: []
             });
             if (item.children !== undefined && item.children.length > 0) {
                 group.addFavorite(new MFavorite({
                     name: item.name,
-                    url: item.url,
+                    url: item.url
                 }));
             }
             groups.push(group);
@@ -132,13 +132,13 @@ export const isFavorite = async (url: string): Promise<boolean> => {
     }
 
     return false;
-}
+};
 
 export const addGroup = async (name: string) => {
     const records: MGroup[] = await getRecords();
     records.push(new MGroup({
         name,
-        children: [],
+        children: []
     }));
     setRecords(records);
 };

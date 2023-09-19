@@ -8,16 +8,16 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
             tabId: activeInfo.tabId,
             path: {
                 19: './assets/icons/favorite_filled_19.png',
-                38: './assets/icons/favorite_filled_38.png',
-            },
+                38: './assets/icons/favorite_filled_38.png'
+            }
         });
     } else {
         browser.action.setIcon({
             tabId: activeInfo.tabId,
             path: {
                 19: './assets/icons/favorite_19.png',
-                38: './assets/icons/favorite_38.png',
-            },
+                38: './assets/icons/favorite_38.png'
+            }
         });
     }
 });
