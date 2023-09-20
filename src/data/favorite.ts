@@ -13,8 +13,7 @@ export const getRecords = async (): Promise<MGroup[]> => {
     } else {
         for (const item of data.items) {
             const group: MGroup = new MGroup({
-                name: item.name,
-                children: []
+                name: item.name
             });
 
             if (item.children !== undefined && item.children.length > 0) {
@@ -106,7 +105,6 @@ export const removeFavorite = async (url: string) => {
 };
 
 export const updateFavorite = async (url: string, name: string, groupName: string) => {
-    console.log(url, name, groupName);
     const records: MGroup[] = await getRecords();
     for (const group of records) {
         for (const favorite of group.children || []) {
@@ -121,8 +119,6 @@ export const updateFavorite = async (url: string, name: string, groupName: strin
                         }
                     }
                 }
-                console.log(records);
-
                 setRecords(records);
                 return;
             }
@@ -144,12 +140,6 @@ export const getAllGroups = async (): Promise<MGroup[]> => {
                 name: item.name,
                 children: []
             });
-            if (item.children !== undefined && item.children.length > 0) {
-                group.addFavorite(new MFavorite({
-                    name: item.name,
-                    url: item.url
-                }));
-            }
             groups.push(group);
         }
     }

@@ -12,8 +12,3 @@ export default class Favorite {
         this.url = params.url;
     }
 };
-
-// export default interface Favorite {
-//     name: string;
-//     url: string;
-// };

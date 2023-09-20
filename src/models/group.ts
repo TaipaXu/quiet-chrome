@@ -7,15 +7,15 @@ interface Params {
 
 export default class Group {
     public name: string;
-    public children?: MFavorite[];
-    // public get children(): MFavorite[] | undefined {
-    //     return this._children;
-    // };
-
+    private _children?: MFavorite[];
 
     constructor({ name, children }: Params) {
         this.name = name;
-        this.children = children;
+        this._children = children;
+    }
+
+    public get children() {
+        return this._children;
     }
 
     public rename(newName: string) {
@@ -23,22 +23,22 @@ export default class Group {
     }
 
     public addFavorite(favorite: MFavorite) {
-        if (!this.children) {
-            this.children = [];
+        if (!this._children) {
+            this._children = [];
         }
-        this.children.push(favorite);
+        this._children.push(favorite);
     }
 
     public removeFavorite(favorite: MFavorite) {
-        if (this.children) {
-            this.children = this.children.filter(item => item.url !== favorite.url);
+        if (this._children) {
+            this._children = this._children.filter(item => item.url !== favorite.url);
         }
     }
 
     public toJSON(): Params {
         return {
             name: this.name,
-            children: this.children
+            children: this._children
         };
     }
 
@@ -47,8 +47,3 @@ export default class Group {
     }
 
 };
-
-// export default interface Group {
-//     name: string;
-//     children?: MFavorite;
-// };
