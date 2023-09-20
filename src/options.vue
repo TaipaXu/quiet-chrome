@@ -58,6 +58,7 @@
                 :key="i"
                 :value="item"
                 color="primary"
+                @click="openPage(item.url)"
                 @contextmenu="handleFavoriteContextMenu($event, item)">
                     <template #prepend>
                         <v-icon icon="mdi-web"></v-icon>
@@ -71,7 +72,7 @@
                     </v-list-item-subtitle>
 
                     <template #append>
-                        <v-icon icon="mdi-close" @click="removeFavorite(item)"></v-icon>
+                        <v-icon icon="mdi-close" @click.stop="removeFavorite(item)"></v-icon>
                     </template>
                 </v-list-item>
             </v-list>
@@ -130,8 +131,7 @@ const handleGroupClicked = (group: MGroup) => {
 
 const removeFavorite = async (favorite: MFavorite) => {
     await DRemoveFavorite(favorite.url);
-    currentFavorites.value = currentFavorites.value.filter(item => (item !== favorite));
-    selectedGroup.value!.children = currentFavorites.value;
+    selectedGroup.value!.removeFavorite(favorite);
 };
 
 const addFolder = async () => {
@@ -160,7 +160,6 @@ const showGroupMenu = ref(false);
 const showFavoriteMenu = ref(false);
 
 const handleGroupMenuSelect = async (value: string) => {
-    showGroupMenu.value = false;
     switch (value) {
         case 'rename':
         {
@@ -185,7 +184,6 @@ const handleGroupMenuSelect = async (value: string) => {
 };
 
 const handleFavoriteMenuSelect = async (value: string) => {
-    showFavoriteMenu.value = false;
     switch (value) {
         case 'rename':
         {
@@ -245,6 +243,10 @@ const addFavorite = async () => {
             currentFavorites.value.push(favorite);
         }
     }
+};
+
+const openPage = (url: string) => {
+    window.open(url);
 };
 </script>
 
