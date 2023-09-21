@@ -132,6 +132,7 @@ const handleGroupClicked = (group: MGroup) => {
 const removeFavorite = async (favorite: MFavorite) => {
     await DRemoveFavorite(favorite.url);
     selectedGroup.value!.removeFavorite(favorite);
+    currentFavorites.value = currentFavorites.value.filter(item => (item !== favorite));
 };
 
 const addFolder = async () => {
@@ -199,6 +200,7 @@ const handleFavoriteMenuSelect = async (value: string) => {
         {
             const favorite: MFavorite = favoriteForMenu.value!;
             await DRemoveFavorite(favorite.url);
+            selectedGroup.value!.removeFavorite(favorite);
             currentFavorites.value = currentFavorites.value.filter(item => (item !== favorite));
             break;
         }
